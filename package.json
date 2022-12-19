@@ -6,6 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "bin": {
+    "brain-games": "bin/brain-games.js"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/iatopilskii/frontend-project-44.git"
@@ -15,5 +18,6 @@
   "bugs": {
     "url": "https://github.com/iatopilskii/frontend-project-44/issues"
   },
-  "homepage": "https://github.com/iatopilskii/frontend-project-44#readme"
+  "homepage": "https://github.com/iatopilskii/frontend-project-44#readme",
+  "type": "module"
 }
