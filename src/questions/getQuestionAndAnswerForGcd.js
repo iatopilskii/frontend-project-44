@@ -4,7 +4,7 @@ const MAX_NUMBER = 50;
 
 // Функция для генерации вопроса и ответа для игры типа GDC_GAME_TYPE
 // Возвращает массив, где arr[0] - вопрос, arr[1] - ответ
-const getQuestionAndAnswerForGdc = () => {
+const getQuestionAndAnswerForGcd = () => {
   const questionFirstNumber = getRandomNumber(MAX_NUMBER);
   const questionSecondNumber = getRandomNumber(MAX_NUMBER);
   const questionString = `Question: ${questionFirstNumber} ${questionSecondNumber}`;
@@ -23,4 +23,4 @@ const getQuestionAndAnswerForGdc = () => {
   return [questionString, answer];
 };
 
-export default getQuestionAndAnswerForGdc;
+export default getQuestionAndAnswerForGcd;

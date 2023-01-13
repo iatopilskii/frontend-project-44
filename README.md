@@ -35,7 +35,7 @@ brain-calc
 #### Игра "НОД"
 ##### Запуск
 ```bash
-brain-gdc
+brain-gcd
 ```
 
 [Пример работы](https://asciinema.org/a/551423)

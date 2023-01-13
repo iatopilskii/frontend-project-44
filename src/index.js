@@ -3,7 +3,7 @@ import { question } from 'readline-sync';
 import greeting from './helpers/greeting.js';
 import getQuestionAndAnswerForEven from './questions/getQuestionAndAnswerForEven.js';
 import getQuestionAndAnswerForCalc from './questions/getQuestionAndAnswerForCalc.js';
-import getQuestionAndAnswerForGdc from './questions/getQuestionAndAnswerForGdc.js';
+import getQuestionAndAnswerForGcd from './questions/getQuestionAndAnswerForGcd.js';
 import getQuestionAndAnswerForProgression from './questions/getQuestionAndAnswerForProgression.js';
 import getQuestionAndAnswerForPrime from './questions/getQuestionAndAnswerForPrime.js';
 
@@ -11,7 +11,7 @@ import getQuestionAndAnswerForPrime from './questions/getQuestionAndAnswerForPri
 const DEFAULT_GAME_TYPE = 'default';
 const EVEN_GAME_TYPE = 'even';
 const CALC_GAME_TYPE = 'calc';
-const GDC_GAME_TYPE = 'gdc';
+const GCD_GAME_TYPE = 'gcd';
 const PROGRESSION_GAME_TYPE = 'progression';
 const PRIME_GAME_TYPE = 'prime';
 
@@ -25,7 +25,7 @@ const getGameRules = (gameType) => {
       return 'Answer "yes" if the number is even, otherwise answer "no".';
     case CALC_GAME_TYPE:
       return 'What is the result of the expression?';
-    case GDC_GAME_TYPE:
+    case GCD_GAME_TYPE:
       return 'Find the greatest common divisor of given numbers.';
     case PROGRESSION_GAME_TYPE:
       return 'What number is missing in the progression?';
@@ -45,8 +45,8 @@ const getQuestionAndAnswer = (gameType) => {
       return getQuestionAndAnswerForEven();
     case CALC_GAME_TYPE:
       return getQuestionAndAnswerForCalc();
-    case GDC_GAME_TYPE:
-      return getQuestionAndAnswerForGdc();
+    case GCD_GAME_TYPE:
+      return getQuestionAndAnswerForGcd();
     case PROGRESSION_GAME_TYPE:
       return getQuestionAndAnswerForProgression();
     case PRIME_GAME_TYPE:
