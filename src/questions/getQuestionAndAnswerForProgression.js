@@ -12,7 +12,7 @@ const getQuestionAndAnswerForProgression = () => {
   const progressionDifference = getRandomNumber(MAX_NUMBER);
   const progression = [progressionStart];
 
-  for (let i = 1; i <= progressionLength; i += 1) {
+  for (let i = 1; i <= progressionLength - 1; i += 1) {
     progression.push(progressionStart + progressionDifference * i);
   }
 
