@@ -4,6 +4,7 @@ import { question } from 'readline-sync';
 const DEFAULT_GAME_TYPE = 'default';
 const EVEN_GAME_TYPE = 'even';
 const CALC_GAME_TYPE = 'calc';
+const GDC_GAME_TYPE = 'gdc';
 
 // Обозначения для операций
 const PLUS = 1;
@@ -22,6 +23,8 @@ const getGameRules = (gameType) => {
       return 'Answer "yes" if the number is even, otherwise answer "no".';
     case CALC_GAME_TYPE:
       return 'What is the result of the expression?';
+    case GDC_GAME_TYPE:
+      return 'Find the greatest common divisor of given numbers.';
     case DEFAULT_GAME_TYPE:
     default:
       return '';
@@ -80,15 +83,37 @@ const getQuestionAndAnswerForCalc = () => {
   return [questionString, answer];
 };
 
+// Функция для генерации вопроса и ответа для игры типа GDC_GAME_TYPE
+// Возвращает массив, где arr[0] - вопрос, arr[1] - ответ
+const getQuestionAndAnswerForGdc = () => {
+  const questionFirstNumber = getRandomNumber(MAX_NUMBER);
+  const questionSecondNumber = getRandomNumber(MAX_NUMBER);
+  const questionString = `Question: ${questionFirstNumber} ${questionSecondNumber}`;
+
+  let a = questionFirstNumber;
+  let b = questionSecondNumber;
+
+  while (b) {
+    const temp = b;
+    b = a % b;
+    a = temp;
+  }
+
+  const answer = a;
+
+  return [questionString, answer];
+};
+
 // Функция для генерации вопроса и ответа
 // Возвращает массив, где arr[0] - вопрос, arr[1] - ответ
 const getQuestionAndAnswer = (gameType) => {
   switch (gameType) {
     case EVEN_GAME_TYPE:
       return getQuestionAndAnswerForEven();
-    case CALC_GAME_TYPE: {
+    case CALC_GAME_TYPE:
       return getQuestionAndAnswerForCalc();
-    }
+    case GDC_GAME_TYPE:
+      return getQuestionAndAnswerForGdc();
     default:
       return undefined;
   }
@@ -104,38 +129,40 @@ const greetings = (gameType) => {
 };
 
 const startGame = (gameType) => {
-  const userName = greetings();
+  const userName = greetings(gameType);
 
   let correctAnswersCount = 0;
 
   let isGameContinues = true; // true => игра продолжается, false => игра закончилась
 
-  while (correctAnswersCount <= QUESTIONS_COUNT && isGameContinues) {
-    const questionAndAnswer = getQuestionAndAnswer(gameType);
+  if (gameType !== DEFAULT_GAME_TYPE) {
+    while (correctAnswersCount < QUESTIONS_COUNT && isGameContinues) {
+      const questionAndAnswer = getQuestionAndAnswer(gameType);
 
-    const stepQuestion = questionAndAnswer[0];
-    const correctAnswer = questionAndAnswer[1];
+      const stepQuestion = questionAndAnswer[0];
+      const correctAnswer = questionAndAnswer[1];
 
-    console.log(stepQuestion);
+      console.log(stepQuestion);
 
-    let userAnswer = question('Your answer: ');
+      let userAnswer = question('Your answer: ');
 
-    if (gameType === CALC_GAME_TYPE) {
-      userAnswer = parseInt(userAnswer, 10);
+      if (gameType === CALC_GAME_TYPE || gameType === GDC_GAME_TYPE) {
+        userAnswer = parseInt(userAnswer, 10);
+      }
+
+      if (userAnswer === correctAnswer) {
+        console.log('Correct!');
+        correctAnswersCount += 1;
+      } else {
+        console.log(`'${userAnswer}' is wrong answer ;(. Correct answer was '${correctAnswer}'.`);
+        console.log(`Let's try again, ${userName}!`);
+        isGameContinues = false;
+      }
     }
 
-    if (userAnswer === correctAnswer) {
-      console.log('Correct!');
-      correctAnswersCount += 1;
-    } else {
-      console.log(`'${userAnswer}' is wrong answer ;(. Correct answer was '${correctAnswer}'.`);
-      console.log(`Let's try again, ${userName}!`);
-      isGameContinues = false;
+    if (correctAnswersCount === QUESTIONS_COUNT) {
+      console.log(`Congratulations, ${userName}!`);
     }
-  }
-
-  if (correctAnswersCount === QUESTIONS_COUNT) {
-    console.log(`Congratulations, ${userName}!`);
   }
 };
 
