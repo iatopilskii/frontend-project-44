@@ -1,19 +1,16 @@
 import { question } from 'readline-sync';
 
+import greeting from './helpers/greeting.js';
+import getQuestionAndAnswerForEven from './questions/getQuestionAndAnswerForEven.js';
+import getQuestionAndAnswerForCalc from './questions/getQuestionAndAnswerForCalc.js';
+import getQuestionAndAnswerForGdc from './questions/getQuestionAndAnswerForGdc.js';
+
 // Наименования типов игр
 const DEFAULT_GAME_TYPE = 'default';
 const EVEN_GAME_TYPE = 'even';
 const CALC_GAME_TYPE = 'calc';
 const GDC_GAME_TYPE = 'gdc';
 
-// Обозначения для операций
-const PLUS = 1;
-const MINUS = 2;
-const MULTIPLY = 3;
-const OPERATIONS_COUNT = 3; // Количество операций
-
-// Константы для игры
-const MAX_NUMBER = 25; // Максимальное число, которое может выпасть
 const QUESTIONS_COUNT = 3; // Максимальное количество вопросов
 
 // Функция для получения правил в зависимости от типа игры
@@ -31,79 +28,6 @@ const getGameRules = (gameType) => {
   }
 };
 
-// Функция для генерации случайного числа в промежутке от 0 до maxNumber
-const getRandomNumber = (maxNumber) => Math.floor(Math.random() * maxNumber) + 1;
-
-// Функция для выбора операции для игры типа CALC_GAME_TYPE
-const getRandomOperation = () => {
-  const operationID = getRandomNumber(OPERATIONS_COUNT);
-
-  switch (operationID) {
-    case PLUS:
-      return '+';
-    case MINUS:
-      return '-';
-    case MULTIPLY:
-    default:
-      return '*';
-  }
-};
-
-// Функция для генерации вопроса и ответа для игры типа EVEN_GAME_TYPE
-// Возвращает массив, где arr[0] - вопрос, arr[1] - ответ
-const getQuestionAndAnswerForEven = () => {
-  const questionNumber = getRandomNumber(MAX_NUMBER);
-  const questionString = `Question: ${questionNumber}`;
-  const answer = questionNumber % 2 === 0 ? 'yes' : 'no';
-  return [questionString, answer];
-};
-
-// Функция для генерации вопроса и ответа для игры типа CALC_GAME_TYPE
-// Возвращает массив, где arr[0] - вопрос, arr[1] - ответ
-const getQuestionAndAnswerForCalc = () => {
-  const questionFirstNumber = getRandomNumber(MAX_NUMBER);
-  const questionSecondNumber = getRandomNumber(MAX_NUMBER);
-  const questionOperation = getRandomOperation();
-
-  const questionString = `Question: ${questionFirstNumber} ${questionOperation} ${questionSecondNumber}`;
-
-  let answer;
-  switch (questionOperation) {
-    case '+':
-      answer = questionFirstNumber + questionSecondNumber;
-      break;
-    case '-':
-      answer = questionFirstNumber - questionSecondNumber;
-      break;
-    case '*':
-    default:
-      answer = questionFirstNumber * questionSecondNumber;
-  }
-
-  return [questionString, answer];
-};
-
-// Функция для генерации вопроса и ответа для игры типа GDC_GAME_TYPE
-// Возвращает массив, где arr[0] - вопрос, arr[1] - ответ
-const getQuestionAndAnswerForGdc = () => {
-  const questionFirstNumber = getRandomNumber(MAX_NUMBER);
-  const questionSecondNumber = getRandomNumber(MAX_NUMBER);
-  const questionString = `Question: ${questionFirstNumber} ${questionSecondNumber}`;
-
-  let a = questionFirstNumber;
-  let b = questionSecondNumber;
-
-  while (b) {
-    const temp = b;
-    b = a % b;
-    a = temp;
-  }
-
-  const answer = a;
-
-  return [questionString, answer];
-};
-
 // Функция для генерации вопроса и ответа
 // Возвращает массив, где arr[0] - вопрос, arr[1] - ответ
 const getQuestionAndAnswer = (gameType) => {
@@ -119,51 +43,54 @@ const getQuestionAndAnswer = (gameType) => {
   }
 };
 
-const greetings = (gameType) => {
-  console.log('Welcome to the Brain Games!');
-  const userName = question('May I have your name? ');
-  console.log(`Hello, ${userName}!`);
-  console.log(getGameRules(gameType));
-
-  return userName;
-};
-
+// Логика игры
 const startGame = (gameType) => {
-  const userName = greetings(gameType);
+  const userName = greeting();
 
-  let correctAnswersCount = 0;
+  // Прекращение игры при gameType === DEFAULT_GAME_TYPE
+  if (gameType === DEFAULT_GAME_TYPE) {
+    return undefined;
+  }
+
+  console.log(getGameRules(gameType)); // вывод правил игры
+
+  let correctAnswersCount = 0; // количетсво правельных ответов
 
   let isGameContinues = true; // true => игра продолжается, false => игра закончилась
 
-  if (gameType !== DEFAULT_GAME_TYPE) {
-    while (correctAnswersCount < QUESTIONS_COUNT && isGameContinues) {
-      const questionAndAnswer = getQuestionAndAnswer(gameType);
+  while (correctAnswersCount < QUESTIONS_COUNT && isGameContinues) {
+    // Получение вопросов и правильных ответов
+    const questionAndAnswer = getQuestionAndAnswer(gameType);
 
-      const stepQuestion = questionAndAnswer[0];
-      const correctAnswer = questionAndAnswer[1];
+    const stepQuestion = questionAndAnswer[0];
+    const correctAnswer = questionAndAnswer[1];
 
-      console.log(stepQuestion);
+    console.log(stepQuestion);
 
-      let userAnswer = question('Your answer: ');
+    // Получение ответа от пользователя
+    let userAnswer = question('Your answer: ');
 
-      if (gameType === CALC_GAME_TYPE || gameType === GDC_GAME_TYPE) {
-        userAnswer = parseInt(userAnswer, 10);
-      }
-
-      if (userAnswer === correctAnswer) {
-        console.log('Correct!');
-        correctAnswersCount += 1;
-      } else {
-        console.log(`'${userAnswer}' is wrong answer ;(. Correct answer was '${correctAnswer}'.`);
-        console.log(`Let's try again, ${userName}!`);
-        isGameContinues = false;
-      }
+    if (gameType === CALC_GAME_TYPE || gameType === GDC_GAME_TYPE) {
+      userAnswer = parseInt(userAnswer, 10);
     }
 
-    if (correctAnswersCount === QUESTIONS_COUNT) {
-      console.log(`Congratulations, ${userName}!`);
+    // Проверка ответа пользователя
+    if (userAnswer === correctAnswer) {
+      console.log('Correct!');
+      correctAnswersCount += 1;
+    } else {
+      console.log(`'${userAnswer}' is wrong answer ;(. Correct answer was '${correctAnswer}'.`);
+      console.log(`Let's try again, ${userName}!`);
+      isGameContinues = false;
     }
   }
+
+  // Проверка пройдена ли игра пользователем или нет
+  if (correctAnswersCount === QUESTIONS_COUNT) {
+    console.log(`Congratulations, ${userName}!`);
+  }
+
+  return undefined;
 };
 
 export default startGame;
