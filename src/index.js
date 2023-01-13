@@ -46,55 +46,72 @@ const getRandomOperation = () => {
   }
 };
 
+// Функция для генерации вопроса и ответа для игры типа EVEN_GAME_TYPE
+// Возвращает массив, где arr[0] - вопрос, arr[1] - ответ
+const getQuestionAndAnswerForEven = () => {
+  const questionNumber = getRandomNumber(MAX_NUMBER);
+  const questionString = `Question: ${questionNumber}`;
+  const answer = questionNumber % 2 === 0 ? 'yes' : 'no';
+  return [questionString, answer];
+};
+
+// Функция для генерации вопроса и ответа для игры типа CALC_GAME_TYPE
+// Возвращает массив, где arr[0] - вопрос, arr[1] - ответ
+const getQuestionAndAnswerForCalc = () => {
+  const questionFirstNumber = getRandomNumber(MAX_NUMBER);
+  const questionSecondNumber = getRandomNumber(MAX_NUMBER);
+  const questionOperation = getRandomOperation();
+
+  const questionString = `Question: ${questionFirstNumber} ${questionOperation} ${questionSecondNumber}`;
+
+  let answer;
+  switch (questionOperation) {
+    case '+':
+      answer = questionFirstNumber + questionSecondNumber;
+      break;
+    case '-':
+      answer = questionFirstNumber - questionSecondNumber;
+      break;
+    case '*':
+    default:
+      answer = questionFirstNumber * questionSecondNumber;
+  }
+
+  return [questionString, answer];
+};
+
 // Функция для генерации вопроса и ответа
 // Возвращает массив, где arr[0] - вопрос, arr[1] - ответ
 const getQuestionAndAnswer = (gameType) => {
   switch (gameType) {
-    case EVEN_GAME_TYPE: {
-      const questionNumber = getRandomNumber(MAX_NUMBER);
-      const questionString = `Question: ${questionNumber}`;
-      const answer = questionNumber % 2 === 0 ? 'yes' : 'no';
-      return [questionString, answer];
-    }
+    case EVEN_GAME_TYPE:
+      return getQuestionAndAnswerForEven();
     case CALC_GAME_TYPE: {
-      const questionFirstNumber = getRandomNumber(MAX_NUMBER);
-      const questionSecondNumber = getRandomNumber(MAX_NUMBER);
-      const questionOperation = getRandomOperation();
-
-      const questionString = `Question: ${questionFirstNumber} ${questionOperation} ${questionSecondNumber}`;
-
-      let answer;
-      switch (questionOperation) {
-        case '+':
-          answer = questionFirstNumber + questionSecondNumber;
-          break;
-        case '-':
-          answer = questionFirstNumber - questionSecondNumber;
-          break;
-        case '*':
-        default:
-          answer = questionFirstNumber * questionSecondNumber;
-      }
-
-      return [questionString, answer];
+      return getQuestionAndAnswerForCalc();
     }
     default:
       return undefined;
   }
 };
 
-const startGame = (gameType) => {
+const greetings = (gameType) => {
   console.log('Welcome to the Brain Games!');
   const userName = question('May I have your name? ');
   console.log(`Hello, ${userName}!`);
   console.log(getGameRules(gameType));
+
+  return userName;
+};
+
+const startGame = (gameType) => {
+  const userName = greetings();
 
   let correctAnswersCount = 0;
 
   while (correctAnswersCount <= QUESTIONS_COUNT) {
     if (correctAnswersCount === QUESTIONS_COUNT) {
       console.log(`Congratulations, ${userName}!`);
-      break;
+      return;
     }
 
     const questionAndAnswer = getQuestionAndAnswer(gameType);
@@ -116,7 +133,7 @@ const startGame = (gameType) => {
     } else {
       console.log(`'${userAnswer}' is wrong answer ;(. Correct answer was '${correctAnswer}'.`);
       console.log(`Let's try again, ${userName}!`);
-      break;
+      return;
     }
   }
 };
