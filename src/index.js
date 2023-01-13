@@ -111,11 +111,6 @@ const startGame = (gameType) => {
   let isGameContinues = true; // true => игра продолжается, false => игра закончилась
 
   while (correctAnswersCount <= QUESTIONS_COUNT && isGameContinues) {
-    if (correctAnswersCount === QUESTIONS_COUNT) {
-      console.log(`Congratulations, ${userName}!`);
-      isGameContinues = false;
-    }
-
     const questionAndAnswer = getQuestionAndAnswer(gameType);
 
     const stepQuestion = questionAndAnswer[0];
@@ -137,6 +132,10 @@ const startGame = (gameType) => {
       console.log(`Let's try again, ${userName}!`);
       isGameContinues = false;
     }
+  }
+
+  if (correctAnswersCount === QUESTIONS_COUNT) {
+    console.log(`Congratulations, ${userName}!`);
   }
 };
 
