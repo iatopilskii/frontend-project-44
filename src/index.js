@@ -108,10 +108,12 @@ const startGame = (gameType) => {
 
   let correctAnswersCount = 0;
 
-  while (correctAnswersCount <= QUESTIONS_COUNT) {
+  let isGameContinues = true; // true => игра продолжается, false => игра закончилась
+
+  while (correctAnswersCount <= QUESTIONS_COUNT && isGameContinues) {
     if (correctAnswersCount === QUESTIONS_COUNT) {
       console.log(`Congratulations, ${userName}!`);
-      return;
+      isGameContinues = false;
     }
 
     const questionAndAnswer = getQuestionAndAnswer(gameType);
@@ -133,7 +135,7 @@ const startGame = (gameType) => {
     } else {
       console.log(`'${userAnswer}' is wrong answer ;(. Correct answer was '${correctAnswer}'.`);
       console.log(`Let's try again, ${userName}!`);
-      return;
+      isGameContinues = false;
     }
   }
 };
