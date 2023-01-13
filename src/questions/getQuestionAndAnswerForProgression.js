@@ -17,7 +17,6 @@ const getQuestionAndAnswerForProgression = () => {
   }
 
   const hiddenElementIndex = getRandomNumber(MAX_PROGRESSION_LENGTH - 2, 1);
-  console.log(hiddenElementIndex);
 
   let questionString = 'Question:';
   const answer = progression[hiddenElementIndex];
