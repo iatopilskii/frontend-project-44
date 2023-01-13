@@ -5,6 +5,7 @@ import getQuestionAndAnswerForEven from './questions/getQuestionAndAnswerForEven
 import getQuestionAndAnswerForCalc from './questions/getQuestionAndAnswerForCalc.js';
 import getQuestionAndAnswerForGdc from './questions/getQuestionAndAnswerForGdc.js';
 import getQuestionAndAnswerForProgression from './questions/getQuestionAndAnswerForProgression.js';
+import getQuestionAndAnswerForPrime from './questions/getQuestionAndAnswerForPrime.js';
 
 // Наименования типов игр
 const DEFAULT_GAME_TYPE = 'default';
@@ -12,6 +13,7 @@ const EVEN_GAME_TYPE = 'even';
 const CALC_GAME_TYPE = 'calc';
 const GDC_GAME_TYPE = 'gdc';
 const PROGRESSION_GAME_TYPE = 'progression';
+const PRIME_GAME_TYPE = 'prime';
 
 // Максимальное количество вопросов
 const QUESTIONS_COUNT = 3;
@@ -26,6 +28,8 @@ const getGameRules = (gameType) => {
     case GDC_GAME_TYPE:
       return 'Find the greatest common divisor of given numbers.';
     case PROGRESSION_GAME_TYPE:
+      return 'What number is missing in the progression?';
+    case PRIME_GAME_TYPE:
       return 'What number is missing in the progression?';
     case DEFAULT_GAME_TYPE:
     default:
@@ -45,6 +49,8 @@ const getQuestionAndAnswer = (gameType) => {
       return getQuestionAndAnswerForGdc();
     case PROGRESSION_GAME_TYPE:
       return getQuestionAndAnswerForProgression();
+    case PRIME_GAME_TYPE:
+      return getQuestionAndAnswerForPrime();
     default:
       return undefined;
   }

@@ -10,6 +10,8 @@ brain-gdc: # запуск игры "НОД"
 	node bin/brain-gdc.js
 brain-progression: # запуск игры "Арифметическая прогрессия"
 	node bin/brain-progression.js
+brain-prime: # запуск игры "Простое ли число?"
+	node bin/brain-prime.js
 publish: # публикация пакета
 	npm publish --dry-run
 lint: # запуск линтера
