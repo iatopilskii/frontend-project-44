@@ -11,7 +11,8 @@ const EVEN_GAME_TYPE = 'even';
 const CALC_GAME_TYPE = 'calc';
 const GDC_GAME_TYPE = 'gdc';
 
-const QUESTIONS_COUNT = 3; // Максимальное количество вопросов
+// Максимальное количество вопросов
+const QUESTIONS_COUNT = 3;
 
 // Функция для получения правил в зависимости от типа игры
 const getGameRules = (gameType) => {
@@ -43,20 +44,12 @@ const getQuestionAndAnswer = (gameType) => {
   }
 };
 
-// Логика игры
-const startGame = (gameType) => {
-  const userName = greeting();
+const askingQuestions = (gameType, userName) => {
+  // Количетсво правельных ответов
+  let correctAnswersCount = 0;
 
-  // Прекращение игры при gameType === DEFAULT_GAME_TYPE
-  if (gameType === DEFAULT_GAME_TYPE) {
-    return undefined;
-  }
-
-  console.log(getGameRules(gameType)); // вывод правил игры
-
-  let correctAnswersCount = 0; // количетсво правельных ответов
-
-  let isGameContinues = true; // true => игра продолжается, false => игра закончилась
+  // true => игра продолжается, false => игра закончилась
+  let isGameContinues = true;
 
   while (correctAnswersCount < QUESTIONS_COUNT && isGameContinues) {
     // Получение вопросов и правильных ответов
@@ -84,6 +77,24 @@ const startGame = (gameType) => {
       isGameContinues = false;
     }
   }
+
+  return correctAnswersCount;
+};
+
+// Логика игры
+const startGame = (gameType) => {
+  const userName = greeting();
+
+  // Прекращение игры при gameType === DEFAULT_GAME_TYPE
+  if (gameType === DEFAULT_GAME_TYPE) {
+    return undefined;
+  }
+
+  // Вывод правил игры
+  console.log(getGameRules(gameType));
+
+  // Задавание вопросов пользователю
+  const correctAnswersCount = askingQuestions(gameType, userName);
 
   // Проверка пройдена ли игра пользователем или нет
   if (correctAnswersCount === QUESTIONS_COUNT) {
