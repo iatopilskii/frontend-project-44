@@ -44,7 +44,26 @@ const getQuestionAndAnswer = (gameType) => {
   }
 };
 
-const askingQuestions = (gameType, userName) => {
+// Функция для задавания одного вопроса пользователю
+// Возвращает массив, где arr[0] - ответ пользователя, arr[1] - правильный ответ
+const askingQuestion = (gameType) => {
+  // Получение вопроса и правильного ответа
+  const [stepQuestion, correctAnswer] = getQuestionAndAnswer(gameType);
+
+  console.log(stepQuestion);
+
+  // Получение ответа от пользователя
+  let userAnswer = question('Your answer: ');
+
+  if (gameType === CALC_GAME_TYPE || gameType === GDC_GAME_TYPE) {
+    userAnswer = parseInt(userAnswer, 10);
+  }
+
+  return [userAnswer, correctAnswer];
+};
+
+// Функция, описывающая процесс игры
+const gameProcess = (gameType, userName) => {
   // Количетсво правельных ответов
   let correctAnswersCount = 0;
 
@@ -52,20 +71,8 @@ const askingQuestions = (gameType, userName) => {
   let isGameContinues = true;
 
   while (correctAnswersCount < QUESTIONS_COUNT && isGameContinues) {
-    // Получение вопросов и правильных ответов
-    const questionAndAnswer = getQuestionAndAnswer(gameType);
-
-    const stepQuestion = questionAndAnswer[0];
-    const correctAnswer = questionAndAnswer[1];
-
-    console.log(stepQuestion);
-
-    // Получение ответа от пользователя
-    let userAnswer = question('Your answer: ');
-
-    if (gameType === CALC_GAME_TYPE || gameType === GDC_GAME_TYPE) {
-      userAnswer = parseInt(userAnswer, 10);
-    }
+    // Получение ответа пользователя и правильного ответа
+    const [userAnswer, correctAnswer] = askingQuestion(gameType);
 
     // Проверка ответа пользователя
     if (userAnswer === correctAnswer) {
@@ -94,7 +101,7 @@ const startGame = (gameType) => {
   console.log(getGameRules(gameType));
 
   // Задавание вопросов пользователю
-  const correctAnswersCount = askingQuestions(gameType, userName);
+  const correctAnswersCount = gameProcess(gameType, userName);
 
   // Проверка пройдена ли игра пользователем или нет
   if (correctAnswersCount === QUESTIONS_COUNT) {
