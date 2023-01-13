@@ -8,6 +8,8 @@ brain-calc: # запуск игры "Калькулятор"
 	node bin/brain-calc.js
 brain-gdc: # запуск игры "НОД"
 	node bin/brain-gdc.js
+brain-progression: # запуск игры "Арифметическая прогрессия"
+	node bin/brain-progression.js
 publish: # публикация пакета
 	npm publish --dry-run
 lint: # запуск линтера

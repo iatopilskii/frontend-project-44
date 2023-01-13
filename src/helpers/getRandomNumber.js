@@ -1,4 +1,4 @@
-// Функция для генерации случайного числа в промежутке от 0 до maxNumber
-const getRandomNumber = (maxNumber) => Math.floor(Math.random() * maxNumber) + 1;
+// Функция для генерации случайного числа в промежутке от min до max
+const getRandomNumber = (min, max) => Math.floor(Math.random() * (max - min)) + min;
 
 export default getRandomNumber;

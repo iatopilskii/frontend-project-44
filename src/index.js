@@ -4,12 +4,14 @@ import greeting from './helpers/greeting.js';
 import getQuestionAndAnswerForEven from './questions/getQuestionAndAnswerForEven.js';
 import getQuestionAndAnswerForCalc from './questions/getQuestionAndAnswerForCalc.js';
 import getQuestionAndAnswerForGdc from './questions/getQuestionAndAnswerForGdc.js';
+import getQuestionAndAnswerForProgression from './questions/getQuestionAndAnswerForProgression.js';
 
 // Наименования типов игр
 const DEFAULT_GAME_TYPE = 'default';
 const EVEN_GAME_TYPE = 'even';
 const CALC_GAME_TYPE = 'calc';
 const GDC_GAME_TYPE = 'gdc';
+const PROGRESSION_GAME_TYPE = 'progression';
 
 // Максимальное количество вопросов
 const QUESTIONS_COUNT = 3;
@@ -23,6 +25,8 @@ const getGameRules = (gameType) => {
       return 'What is the result of the expression?';
     case GDC_GAME_TYPE:
       return 'Find the greatest common divisor of given numbers.';
+    case PROGRESSION_GAME_TYPE:
+      return 'What number is missing in the progression?';
     case DEFAULT_GAME_TYPE:
     default:
       return '';
@@ -39,6 +43,8 @@ const getQuestionAndAnswer = (gameType) => {
       return getQuestionAndAnswerForCalc();
     case GDC_GAME_TYPE:
       return getQuestionAndAnswerForGdc();
+    case PROGRESSION_GAME_TYPE:
+      return getQuestionAndAnswerForProgression();
     default:
       return undefined;
   }
@@ -55,7 +61,7 @@ const askingQuestion = (gameType) => {
   // Получение ответа от пользователя
   let userAnswer = question('Your answer: ');
 
-  if (gameType === CALC_GAME_TYPE || gameType === GDC_GAME_TYPE) {
+  if (!Number.isNaN(parseInt(userAnswer, 10))) {
     userAnswer = parseInt(userAnswer, 10);
   }
 
