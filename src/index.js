@@ -30,7 +30,7 @@ const getGameRules = (gameType) => {
     case PROGRESSION_GAME_TYPE:
       return 'What number is missing in the progression?';
     case PRIME_GAME_TYPE:
-      return 'What number is missing in the progression?';
+      return 'Answer "yes" if given number is prime. Otherwise answer "no".';
     case DEFAULT_GAME_TYPE:
     default:
       return '';
